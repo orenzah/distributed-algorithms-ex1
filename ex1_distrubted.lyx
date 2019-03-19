@@ -1,0 +1,1048 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{tikz}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1cm
+\topmargin 1cm
+\rightmargin 1cm
+\bottommargin 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Distributed Algorithms
+\begin_inset Newline newline
+\end_inset
+
+371-1-0301
+\begin_inset Newline newline
+\end_inset
+
+Exercise 1
+\end_layout
+
+\begin_layout Author
+Oren Zaharia
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ We have a synchronous ring, which holds 
+\begin_inset Formula $n-1$
+\end_inset
+
+ processors with the same identifier and another one with different identifier.
+\end_layout
+
+\begin_layout Standard
+Therefore, we may thing about an algorithm which looks for the odd identifier,
+ that is the leader.
+\end_layout
+
+\begin_layout Standard
+We know that 
+\begin_inset Formula $n>2$
+\end_inset
+
+, therefore we may conclude the following algorithms.
+\end_layout
+
+\begin_layout Standard
+Each processor will hold two counters, using that counters the processor
+ can identify the major identifiers.
+\end_layout
+
+\begin_layout Standard
+Therefore, only one counter will be 
+\begin_inset Formula $\geq2$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In each stage, each processor send its id and receive its neighbors IDs.
+\end_layout
+
+\begin_layout Standard
+After one iteration each node will know what is the major identifier.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithm} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+caption{Leader election}
+\backslash
+label{euclid} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+hspace*{
+\backslash
+algorithmicindent} 
+\backslash
+textbf{Input} $myID$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{algorithmic}[1] 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE $myCounter = 1$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE $oddCounter = 0$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE send $myID$ to left and right
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+COMMENT {send is always to both sides}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE receive $leftID$ from left
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+STATE receive $rightID$ from right
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+IF{$leftID==myID$}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE $myCounter$ $+=$ $1$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ELSE
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE $oddCounter$ $+=$ $1$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ENDIF
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+IF{$rightID==myID$}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE $myCounter$ $+=$ $1$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ELSE
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE $oddCounter$ $+=$ $1$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ENDIF
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+IF{$oddCounter==0$}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE receive $newID$
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+WHILE {$newID==myID$}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+STATE receive $newID$
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+COMMENT{wait to receive the leader ID.}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+ENDWHILE
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+STATE send $newID$
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ELSE
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+IF{$myCounter == 1$}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+STATE send $myID$.
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+COMMENT {I'm the leader}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+ELSE
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+IF {$myID
+\backslash
+neq leftID$}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+STATE send $leftID$.
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+COMMENT {Left is the leader}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+ELSE
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+STATE send $rightID$.
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+COMMENT {Right is the leader}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+ENDIF
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+ENDIF
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+ENDIF
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithmic} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{algorithm} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ No, that not always possible.
+\end_layout
+
+\begin_layout Standard
+Let the following ring be our impossible case:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+usetikzlibrary{shapes.geometric}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[scale=0.4]
+\end_layout
+
+\begin_layout Plain Layout
+
+[every node/.style={inner sep=0pt}]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (2) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (220.625pt, -45.0pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (4) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (307.5pt, -233.125pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (1) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (103.75pt, -80.625pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (3) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (335.625pt, -108.125pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (5) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (153.125pt, -266.25pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node (6) [circle, minimum size=10.0pt, fill=cyan, line width=0.625pt, draw=black]
+ at (56.875pt, -181.875pt)  {};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (1) to  (2);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (2) to  (3);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (4) to  (3);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (4) to  (5);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (5) to  (6);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+draw [line width=0.625, color=black] (6) to  (1);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (220.625pt, -78.125pt) {
+\backslash
+textcolor{black}{Y}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (307.5pt, -266.25pt) {
+\backslash
+textcolor{black}{X}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (103.75pt, -113.75pt) {
+\backslash
+textcolor{black}{X}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (335.625pt, -141.25pt) {
+\backslash
+textcolor{black}{Y}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (153.125pt, -299.375pt) {
+\backslash
+textcolor{black}{Y}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node at (56.875pt, -215.0pt) {
+\backslash
+textcolor{black}{Y}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Counterexample ring graph
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We have two nodes with identical properties (ID), that is, each phase they
+ will act exactly the same, due to their point of view.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ In each phase, the number of active nodes is being rolling out by factor
+ of minimum 2.
+\end_layout
+
+\begin_layout Standard
+Each following phase continue in much the same way.
+ Each active node now sends its new ID (that is the maximum of the last
+ three).
+\end_layout
+
+\begin_layout Standard
+At the end, the node that sees that the ID it receives from its immediate
+ active 
+\begin_inset Quotes eld
+\end_inset
+
+parent
+\begin_inset Quotes erd
+\end_inset
+
+ is the as its ID, the it knows that it's the only one left, that is the
+ last phase.
+ In that case, the node elects itself as the leader.
+\end_layout
+
+\begin_layout Standard
+Therefore, at most 
+\begin_inset Formula $\log n$
+\end_inset
+
+ phases, and 
+\begin_inset Formula $2n$
+\end_inset
+
+ messages in phase totally, so 
+\begin_inset Formula $O\left(n\log n\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ An arbitrary node will inititate the process, sends to its whole neighbours
+ an initiate message.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ After receiving the first message, the receiving node sends its ID to its
+ whole neighbours and sum the number of neighobours.
+ The received IDs will be logged.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ Each node, will advertise to its neighbours the number of neighbours from
+ its point of view.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ Each node, will compare its whole received numbers of number of neighbours,
+ and will compare them.
+ If the numbers are identical, continue to step 'e', else return False not-compl
+ete graph.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ Each node advertise the maximum from whole received IDs include its own
+ ID.
+ Each node checks the maximum, if there is a mismatch the node advertise
+ False, otherwise True.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Analsys:
+\end_layout
+
+\begin_layout Standard
+Each message contains the ID, that is 
+\begin_inset Formula $\log n$
+\end_inset
+
+ bits length.
+\end_layout
+
+\begin_layout Standard
+The messages propogates on all edges that are connected to the initiated
+ node, and its next-neighbours.
+ Therefore, 
+\begin_inset Formula $O\left(\left|E\right|\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In complete graph the diameter is 1, therefore 
+\begin_inset Formula $O\left(d\right)$
+\end_inset
+
+ is 
+\begin_inset Formula $O\left(1\right)$
+\end_inset
+
+, our algorithms is by constant time, 
+\begin_inset Formula $O\left(3\right)$
+\end_inset
+
+ that is 
+\begin_inset Formula $O\left(1\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{enumerate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
