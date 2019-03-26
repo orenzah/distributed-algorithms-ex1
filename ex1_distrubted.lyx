@@ -860,7 +860,7 @@ status open
 
 
 \backslash
-begin{enumerate}
+item
 \end_layout
 
 \end_inset
@@ -876,7 +876,7 @@ status open
 
 
 \backslash
-item
+begin{enumerate}
 \end_layout
 
 \end_inset
@@ -991,7 +991,7 @@ end{enumerate}
 \end_layout
 
 \begin_layout Standard
-Analsys:
+Analysis:
 \end_layout
 
 \begin_layout Standard
@@ -1003,8 +1003,8 @@ Each message contains the ID, that is
 \end_layout
 
 \begin_layout Standard
-The messages propogates on all edges that are connected to the initiated
- node, and its next-neighbours.
+The messages propagates on all edges that are connected to the initiated
+ node, and its next-neighbors.
  Therefore, 
 \begin_inset Formula $O\left(\left|E\right|\right)$
 \end_inset
@@ -1030,6 +1030,78 @@ In complete graph the diameter is 1, therefore
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+item
+\end_layout
+
+\end_inset
+
+ Given connected network with 
+\begin_inset Formula $\left|V\right|$
+\end_inset
+
+ nodes and 
+\begin_inset Formula $\left|E\right|$
+\end_inset
+
+ edges, each node has its own unique ID.
+\end_layout
+
+\begin_layout Standard
+Let the algorithm work as an allegory to command and conquer (Red Alert
+ 2: Command and Conquer), till white flag raised.
+\end_layout
+
+\begin_layout Standard
+In the beginning every node attempt to be the leader and sends its ID to
+ its neighbors.
+\end_layout
+
+\begin_layout Standard
+Each node that get from its neighbors an ID, will become a 
+\begin_inset Quotes eld
+\end_inset
+
+obedient
+\begin_inset Quotes erd
+\end_inset
+
+ to biggest unique ID, that is it we found a local 
+\begin_inset Quotes eld
+\end_inset
+
+leader
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In the next time, the 
+\begin_inset Quotes eld
+\end_inset
+
+obedient
+\begin_inset Quotes erd
+\end_inset
+
+ node sends its leader's unique ID.
+\end_layout
+
+\begin_layout Standard
+For each edge, only 
+\series bold
+one
+\series default
+ unique ID is transmitted, that is each unique ID will be transmitted only
+ once in each edge.
 \end_layout
 
 \begin_layout Standard
